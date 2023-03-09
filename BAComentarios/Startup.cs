@@ -36,6 +36,11 @@ namespace BAComentarios
             services.AddDbContext<AplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder=> builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +52,7 @@ namespace BAComentarios
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BAComentarios v1"));
             }
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
